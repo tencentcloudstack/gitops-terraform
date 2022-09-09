@@ -21,14 +21,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v3
-        with:
-            path: prod
       - uses: hashicorp/setup-terraform@v2
      
       # Runs a single command using the runners shell
       - name: terraform init
         working-directory: ./prod
-        run: terraform init
+        run: |
+          ls -al
+          terraform init
+          la -al
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script

@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-            path: "prod"
+            path: prod
       - uses: hashicorp/setup-terraform@v2
 
       # Runs a single command using the runners shell

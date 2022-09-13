@@ -30,9 +30,7 @@ jobs:
       - name: terraform init
         working-directory: ./prod
         run: |
-          ls -al
           terraform init
-          ls -al
 
       # Runs a set of commands using the runners shell
       - name: terraform validate

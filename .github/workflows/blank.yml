@@ -38,6 +38,7 @@ jobs:
           pwd
           export TENCENTCLOUD_SECRET_KEY=${{ secrets.TENCENTCLOUD_SECRET_KEY }}
           export TENCENTCLOUD_SECRET_ID=${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          terraform plan
           
       - name: terraform plan
         working-directory: ./prod

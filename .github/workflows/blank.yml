@@ -35,9 +35,9 @@ jobs:
       - name: Run a multi-line script
         working-directory: ./prod
         run: |
-          pwd
           export TENCENTCLOUD_SECRET_KEY=${{ secrets.TENCENTCLOUD_SECRET_KEY }}
           export TENCENTCLOUD_SECRET_ID=${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          env | grep "TENCENTCLOUD_SECRET"
           terraform plan
           
       - name: terraform plan

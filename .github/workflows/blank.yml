@@ -29,8 +29,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: terraform init
         working-directory: ./prod
-        run: |
-          terraform init
+        run: terraform init
 
       # Runs a set of commands using the runners shell
       - name: terraform validate

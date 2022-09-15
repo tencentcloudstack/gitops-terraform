@@ -65,9 +65,9 @@ jobs:
             <details><summary>Show Plan</summary>
             \`\`\`\n
             ${process.env.PLAN}
-            \`\`\`
+            \`\`\`\n
             </details>
-            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            * Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

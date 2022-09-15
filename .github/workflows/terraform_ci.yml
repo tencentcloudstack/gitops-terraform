@@ -21,10 +21,12 @@ jobs:
     steps:
       - name: check env
         run: |
-          if [ ! -d "environments/${GITHUB_REF##*/}" ]; then
-            echo $GITHUB_REF
+          echo $GITHUB_REF_NAME
+          env
+
+          if [ ! -d "environments/${GITHUB_REF_NAME##*/}" ]; then
             echo "*************************SKIPPING************************************"
-            echo "Branch '${GITHUB_REF##*/}' does not represent an oficial environment."
+            echo "Branch '${GITHUB_REF_NAME##*/}' does not represent an oficial environment."
             echo "*********************************************************************"
           fi
           exit 1
@@ -34,23 +36,23 @@ jobs:
      
       - name: terraform fmt
         id: fmt
-        working-directory: ./environments/${GITHUB_REF##*/}
+        working-directory: ./environments/${GITHUB_REF_NAME##*/}
         run: terraform fmt -check
 
       - name: terraform init
         id: init
-        working-directory: ./environments/${GITHUB_REF##*/}
+        working-directory: ./environments/${GITHUB_REF_NAME##*/}
         run: terraform init
 
       - name: terraform validate
         id: validate
-        working-directory: ./environments/${GITHUB_REF##*/}
+        working-directory: ./environments/${GITHUB_REF_NAME##*/}
         run: terraform validate
           
       - name: terraform plan
         id: plan
         if: github.event_name == 'pull_request'
-        working-directory: ./environments/${GITHUB_REF##*/}
+        working-directory: ./environments/${GITHUB_REF_NAME##*/}
         run: terraform plan
 
       - uses: actions/github-script@v6
@@ -78,6 +80,6 @@ jobs:
         
       - name: terraform apply
         if: github.event.pull_request.merged == true
-        working-directory: ./environments/${GITHUB_REF##*/}
+        working-directory: ./environments/${GITHUB_REF_NAME##*/}
         run: terraform apply -auto-approve
       

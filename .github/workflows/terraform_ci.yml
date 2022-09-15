@@ -19,21 +19,18 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      
       - name: check env
         run: |
-          pwd
-          ls
-          echo "environments/$GITHUB_HEAD_REF"
           if [ ! -d "environments/$GITHUB_HEAD_REF" ]; then
             echo "*************************SKIPPING************************************"
             echo "Branch '$GITHUB_HEAD_REF' does not represent an oficial environment."
             echo "*********************************************************************"
           fi
           exit 1
-
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-     
+      
       - name: terraform fmt
         id: fmt
         working-directory: ./environments/$GITHUB_HEAD_REF

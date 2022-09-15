@@ -22,6 +22,7 @@ jobs:
       - name: check env
         run: |
           if [ ! -d "environments/${GITHUB_REF##*/}" ]; then
+            echo $GITHUB_REF
             echo "*************************SKIPPING************************************"
             echo "Branch '${GITHUB_REF##*/}' does not represent an oficial environment."
             echo "*********************************************************************"

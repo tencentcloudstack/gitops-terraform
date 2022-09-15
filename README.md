@@ -16,5 +16,5 @@
 5. 销毁资源: terraform destroy
 
 ### 结果展示
-![COS信息](https://github.com/tongyiming/gitops-terraform/imgs/tke-example-cluser.jpg)
-![tke集群信息](https://github.com/tongyiming/gitops-terraform/imgs/backend_cos.jpg)
+![COS信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/tke-example-cluser.jpg)
+![tke集群信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/backend_cos.jpg)

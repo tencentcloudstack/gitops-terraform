@@ -1,0 +1,31 @@
+name: Apply
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+
+jobs:
+  build:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    env: 
+      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+
+      - name: terraform init
+        id: init
+        working-directory: environments/${{ github.head_ref	}}
+        run: terraform init
+
+      - name: terraform apply
+        working-directory: environments/${{ github.head_ref }}
+        run: terraform apply -auto-approve
+      

@@ -74,9 +74,3 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-        
-      - name: terraform apply
-        if: github.event.pull_request.merged == true && steps.plan.outcome != 'failure'
-        working-directory: environments/${{ github.head_ref }}
-        run: terraform apply -auto-approve
-      

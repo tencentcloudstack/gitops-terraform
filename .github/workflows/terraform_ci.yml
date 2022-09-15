@@ -21,12 +21,9 @@ jobs:
     steps:
       - name: check env
         run: |
-          echo $GITHUB_REF_NAME
-          env
-
-          if [ ! -d "environments/${GITHUB_REF_NAME##*/}" ]; then
+          if [ ! -d "environments/$GITHUB_HEAD_REF" ]; then
             echo "*************************SKIPPING************************************"
-            echo "Branch '${GITHUB_REF_NAME##*/}' does not represent an oficial environment."
+            echo "Branch '$GITHUB_HEAD_REF' does not represent an oficial environment."
             echo "*********************************************************************"
           fi
           exit 1
@@ -36,24 +33,25 @@ jobs:
      
       - name: terraform fmt
         id: fmt
-        working-directory: ./environments/${GITHUB_REF_NAME##*/}
+        working-directory: ./environments/$GITHUB_HEAD_REF
         run: terraform fmt -check
 
       - name: terraform init
         id: init
-        working-directory: ./environments/${GITHUB_REF_NAME##*/}
+        working-directory: ./environments/$GITHUB_HEAD_REF
         run: terraform init
 
       - name: terraform validate
         id: validate
-        working-directory: ./environments/${GITHUB_REF_NAME##*/}
+        working-directory: ./environments/$GITHUB_HEAD_REF
         run: terraform validate
           
       - name: terraform plan
         id: plan
         if: github.event_name == 'pull_request'
-        working-directory: ./environments/${GITHUB_REF_NAME##*/}
-        run: terraform plan
+        working-directory: ./environments/$GITHUB_HEAD_REF
+        run: terraform plan -no-color
+        continue-on-error: true
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
@@ -79,7 +77,7 @@ jobs:
             })
         
       - name: terraform apply
-        if: github.event.pull_request.merged == true
-        working-directory: ./environments/${GITHUB_REF_NAME##*/}
+        if: github.event.pull_request.merged == true && steps.plan.outcome != 'failure'
+        working-directory: ./environments/$GITHUB_HEAD_REF
         run: terraform apply -auto-approve
       

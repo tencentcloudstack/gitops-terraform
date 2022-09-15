@@ -24,6 +24,10 @@
 1. dev分支通过创建vpc和subnet演示单一资源的创建
 2. prod分支通过创建tke集群演示多个资源相互依赖的资源创建
 
+### PLAN信息
+项目中的action会将`terraform fmt`、`terraform init`、`terraform validate`、`terraform plan`执行结果和PLAN详细信息通过comment在pull-reuqest中展示
+![COMMENT信息](https://github.com/tongyiming/gitops-terraform/imgs/comment_info.jpg)
+
 ### TKE结果展示(prod环境)
 ![COS信息](https://github.com/tongyiming/gitops-terraform/imgs/tke-example-cluser.jpg)
 ![tke集群信息](https://github.com/tongyiming/gitops-terraform/imgs/backend_cos.jpg)

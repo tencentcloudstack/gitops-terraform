@@ -24,15 +24,12 @@ jobs:
       
       - name: check env
         run: |
-          pwd
-          ls
-          echo $GITHUB_HEAD_REF
           if [ ! -d "environments/$GITHUB_HEAD_REF" ]; then
             echo "*************************SKIPPING************************************"
             echo "Branch '$GITHUB_HEAD_REF' does not represent an oficial environment."
             echo "*********************************************************************"
+            exit 1
           fi
-          exit 1
       
       - name: terraform fmt
         id: fmt

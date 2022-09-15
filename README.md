@@ -12,12 +12,27 @@
 2. Module通过对资源的定义，参数，语法等细节问题进行封装。让户只需关注module的input参数，无需关心细节信息，从而将更多的时间和精力投入到架构设计和资源关系整合上
 3. 本示例中modules目中定义了network、security_group和tke三个module供用户参考
 
+
+### 流水线信息
+1. pull_request流水线(terraform_pr_check.yml)
+> 任何的PR都会触发（依次执行`terraform fmt`、`terraform init`、`terraform validate`、`terraform plan`）
+
+2. apply流水线(terraform_merge_apply.yml)
+> PR merge后触发（依次执行`terraform init`、`terraform apply`）
+
 ### 使用方式
-1. 选择环境: 进入dev或prod目录中
-2. 初始化环境: terraform init
-3. 查看执行计划: terraform plan
-4. 部署资源: terraform apply
-5. 销毁资源: terraform destroy
+1. 配置secrets: TENCENTCLOUD_SECRET_KEY和TENCENTCLOUD_SECRET_ID
+![secrets信息](https://github.com/tongyiming/gitops-terraform/imgs/secrets.jpg)
+
+2. 通过pull_request流水线线上触发
+> 提交PR触发流水线或者手动触发流水线
+
+3. 手动本地触发
+   a. 选择环境: 进入dev或prod目录中
+   b. 初始化环境: terraform init
+   c. 查看执行计划: terraform plan
+   b. 部署资源: terraform apply
+   e. 销毁资源: terraform destroy
 
 
 ### 示例信息

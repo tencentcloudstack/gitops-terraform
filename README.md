@@ -1,6 +1,10 @@
 ### 环境隔离
-1. 本示例使用environments目录隔离不同环境环境，需要分别在dev和prod中初始化terraform环境
-2. 还有分支和workspace两种方式来隔离环境。用户可以将dev或prod中的文件作为项目跟模块实现，此处不再赘述
+1. 隔离方式
+> a. 使用分支进行隔离，不同环境使用不同分支，直接在root module下通过`terraform init`初始化使用
+> b. 使用terraform workspace进行隔离，与分支方式类似
+> c. 使用目录进行环境隔离，不同环境使用不同目录进行初始化
+
+2. 本示例使用environments目录隔离不同环境环境，需要分别在dev和prod中初始化terraform环境
 
 
 ### module复用
@@ -15,6 +19,11 @@
 4. 部署资源: terraform apply
 5. 销毁资源: terraform destroy
 
-### 结果展示
-![COS信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/tke-example-cluser.jpg)
-![tke集群信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/backend_cos.jpg)
+
+### 示例信息
+1. dev分支通过创建vpc和subnet演示单一资源的创建
+2. prod分支通过创建tke集群演示多个资源相互依赖的资源创建
+
+### TKE结果展示(prod环境)
+![COS信息](https://github.com/tongyiming/gitops-terraform/imgs/tke-example-cluser.jpg)
+![tke集群信息](https://github.com/tongyiming/gitops-terraform/imgs/backend_cos.jpg)

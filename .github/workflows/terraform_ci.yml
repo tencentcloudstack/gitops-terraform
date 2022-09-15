@@ -33,8 +33,7 @@ jobs:
       
       - name: terraform fmt
         id: fmt
-        working-directory: environments/${{ github.head_ref	}}
-        run: terraform fmt -check
+        run: terraform fmt -recursive -check
 
       - name: terraform init
         id: init

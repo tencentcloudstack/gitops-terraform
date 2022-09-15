@@ -1,7 +1,7 @@
 terraform {
-    required_providers {
-        tencentcloud = {
-            source = "tencentcloudstack/tencentcloud"
-        }
+  required_providers {
+    tencentcloud = {
+      source = "tencentcloudstack/tencentcloud"
     }
+  }
 }

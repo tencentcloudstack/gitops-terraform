@@ -49,7 +49,7 @@ variable "subnet_name" {
 }
 
 variable "subnet_tags" {
-  type = map(string)
+  type        = map(string)
   default     = {}
   description = "Tagged for all associated resource of this module."
 }

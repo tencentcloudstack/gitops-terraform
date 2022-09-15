@@ -33,23 +33,23 @@ jobs:
       
       - name: terraform fmt
         id: fmt
-        working-directory: environments/${{ GITHUB_HEAD_REF }}
+        working-directory: environments/${{ github.head_ref	}}
         run: terraform fmt -check
 
       - name: terraform init
         id: init
-        working-directory: environments/${{ GITHUB_HEAD_REF }}
+        working-directory: environments/${{ github.head_ref	}}
         run: terraform init
 
       - name: terraform validate
         id: validate
-        working-directory: environments/${{ GITHUB_HEAD_REF }}
+        working-directory: environments/${{ github.head_ref	}}
         run: terraform validate
           
       - name: terraform plan
         id: plan
         if: github.event_name == 'pull_request'
-        working-directory: environments/${{ GITHUB_HEAD_REF }}
+        working-directory: environments/${{ github.head_ref	}}
         run: terraform plan -no-color
         continue-on-error: true
 
@@ -78,6 +78,6 @@ jobs:
         
       - name: terraform apply
         if: github.event.pull_request.merged == true && steps.plan.outcome != 'failure'
-        working-directory: environments/${{ GITHUB_HEAD_REF }}
+        working-directory: environments/${{ github.head_ref }}
         run: terraform apply -auto-approve
       

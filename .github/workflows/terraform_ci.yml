@@ -1,0 +1,82 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  pull_request:
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env: 
+      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: check env
+        run: |
+          if [ ! -d "environments/${GITHUB_REF##*/}" ]; then
+            echo "*************************SKIPPING************************************"
+            echo "Branch '${GITHUB_REF##*/}' does not represent an oficial environment."
+            echo "*********************************************************************"
+          fi
+          exit 1
+
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+     
+      - name: terraform fmt
+        id: fmt
+        working-directory: ./environments/${GITHUB_REF##*/}
+        run: terraform fmt -check
+
+      - name: terraform init
+        id: init
+        working-directory: ./environments/${GITHUB_REF##*/}
+        run: terraform init
+
+      - name: terraform validate
+        id: validate
+        working-directory: ./environments/${GITHUB_REF##*/}
+        run: terraform validate
+          
+      - name: terraform plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        working-directory: ./environments/${GITHUB_REF##*/}
+        run: terraform plan
+
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+            </details>
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+        
+      - name: terraform apply
+        if: github.event.pull_request.merged == true
+        working-directory: ./environments/${GITHUB_REF##*/}
+        run: terraform apply -auto-approve
+      

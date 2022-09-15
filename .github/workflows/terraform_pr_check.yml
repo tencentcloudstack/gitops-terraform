@@ -49,7 +49,7 @@ jobs:
         id: plan
         if: github.event_name == 'pull_request'
         working-directory: environments/${{ github.head_ref	}}
-        run: terraform plan -no-color
+        run: terraform plan
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -63,11 +63,15 @@ jobs:
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
             <details><summary>Show Plan</summary>
+
             \`\`\`\n
             ${process.env.PLAN}
-            \`\`\`\n
+            \`\`\`
+
             </details>
-            * Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

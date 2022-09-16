@@ -1,6 +1,6 @@
 ### 使用方式
 1. 配置secrets: TENCENTCLOUD_SECRET_KEY和TENCENTCLOUD_SECRET_ID
-![secrets信息](https://github.com/tongyiming/gitops-terraform/imgs/secrets.jpg)
+![secrets信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/secrets.jpg)
 
 2. 通过pull_request流水线线上触发
 提交PR触发流水线或者手动触发流水线
@@ -38,8 +38,8 @@
 
 ### PLAN信息展示
 项目中的action会将`terraform fmt`、`terraform init`、`terraform validate`、`terraform plan`执行结果和PLAN详细信息通过comment在pull-reuqest中展示
-![COMMENT信息](https://github.com/tongyiming/gitops-terraform/imgs/comment_info.jpg)
+![COMMENT信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/comment_info.jpg)
 
 ### TKE结果展示(prod环境)
-![COS信息](https://github.com/tongyiming/gitops-terraform/imgs/tke-example-cluser.jpg)
-![tke集群信息](https://github.com/tongyiming/gitops-terraform/imgs/backend_cos.jpg)
+![COS信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/tke-example-cluser.jpg)
+![tke集群信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/backend_cos.jpg)

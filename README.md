@@ -6,11 +6,11 @@
 提交PR触发流水线或者手动触发流水线
 
 3. 手动本地触发
-   a. 选择环境: 进入dev或prod目录中
-   b. 初始化环境: terraform init
-   c. 查看执行计划: terraform plan
-   b. 部署资源: terraform apply
-   e. 销毁资源: terraform destroy
+   - 选择环境: 进入dev或prod目录中
+   - 初始化环境: terraform init
+   - 查看执行计划: terraform plan
+   - 部署资源: terraform apply
+   - 销毁资源: terraform destroy
 
 ### 目录结构
 本示例包含服务的实际配置的 modules 目录和包含每个环境的根配置的 environments 目录。
@@ -25,9 +25,9 @@
 
 > 环境隔离
 > 1. 隔离方式
-> a. 使用分支进行隔离，不同环境使用不同分支，直接在root module下通过`terraform init`初始化使用
-> b. 使用terraform workspace进行隔离，与分支方式类似
-> c. 使用目录进行环境隔离，不同环境使用不同目录进行初始化
+> - 使用分支进行隔离，不同环境使用不同分支，直接在root module下通过`terraform init`初始化使用
+> -  使用terraform workspace进行隔离，与分支方式类似
+> -  使用目录进行环境隔离，不同环境使用不同目录进行初始化
 
 ### 流水线信息
 1. pull_request流水线(terraform_pr_check.yml)

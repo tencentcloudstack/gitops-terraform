@@ -38,6 +38,47 @@
 2. apply流水线(terraform_merge_apply.yml)
 > PR merge后触发（依次执行`terraform init`、`terraform apply`）
 
+```plantuml
+@startuml
+actor User
+
+box "Code" #LightBlue
+	participant branch_prod
+	participant branch_main
+end box
+
+
+box "CICD" #Yellow
+	participant terraform_fmt
+	participant terraform_init
+	participant terraform_validate
+	participant terraform_plan
+	participant terraform_apply
+end box
+
+User->branch_prod:update config
+
+group check_flow
+    branch_prod-\terraform_fmt:PR trigger
+    terraform_fmt -\ terraform_init
+    terraform_init -\ terraform_validate
+    terraform_validate -\ terraform_plan
+end
+branch_prod->branch_main:merge
+
+group apply_flow
+    branch_prod-\terraform_init:Merge 
+
+    terraform_init -\ terraform_apply
+    terraform_apply-\resource
+end
+box "Cloud Platform" #LightGreen
+	participant resource
+end box
+
+@enduml
+```
+
 ### PLAN信息展示
 项目中的action会将`terraform fmt`、`terraform init`、`terraform validate`、`terraform plan`执行结果和PLAN详细信息通过comment在pull-reuqest中展示
 ![COMMENT信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/comment_info.jpg)

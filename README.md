@@ -1,16 +1,18 @@
 ### 使用方式
-1. 配置secrets: TENCENTCLOUD_SECRET_KEY和TENCENTCLOUD_SECRET_ID
+1. 环境配置
+   - 配置Secrets: `TENCENTCLOUD_SECRET_KEY`和`TENCENTCLOUD_SECRET_ID`（腾讯云AKSK）
 ![secrets信息](https://github.com/tongyiming/gitops-terraform/blob/main/imgs/secrets.jpg)
+   - 将dev和prod中`prodvider.tf`中的配置按需修改，至少需要更新backend信息
 
-2. 通过pull_request流水线线上触发
-提交PR触发流水线或者手动触发流水线
 
-3. 手动本地触发
-   - 选择环境: 进入dev或prod目录中
-   - 初始化环境: terraform init
-   - 查看执行计划: terraform plan
-   - 部署资源: terraform apply
-   - 销毁资源: terraform destroy
+1. 部署方式
+   - 通过pull_request流水线线上触发，提交PR触发流水线或者手动触发流水线
+   - 手动本地触发
+     - 选择环境: 进入dev或prod目录
+     - 初始化环境: `terraform init`
+     - 查看执行计划: `terraform plan`
+     - 部署资源: `terraform apply`
+     - 销毁资源: `terraform destroy`
 
 ### 目录结构
 本示例包含服务的实际配置的 modules 目录和包含每个环境的根配置的 environments 目录。

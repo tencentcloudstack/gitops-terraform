@@ -39,8 +39,8 @@ jobs:
               echo "At environment: ${{ github.head_ref	}}"
               echo "At workspace: ${env}"
               echo "=================================="
-              terraform workspace new ${env}
-              terraform workspace select ${env}
+              
+              terraform workspace select ${env} || terraform workspace new ${env}
               terraform apply -auto-approve
             done
           else

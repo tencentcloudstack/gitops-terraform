@@ -1,4 +1,4 @@
 locals {
-    workspace_cicd = "cicd" 
-    workspace_qta = "qta" 
+  workspace_cicd = "cicd"
+  workspace_qta  = "qta"
 }

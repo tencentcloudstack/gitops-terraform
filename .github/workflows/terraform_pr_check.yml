@@ -49,7 +49,27 @@ jobs:
         id: plan
         if: github.event_name == 'pull_request'
         working-directory: environments/${{ github.head_ref	}}
-        run: terraform plan -no-color
+        run: |
+          dir_count=`ls -l | grep "^d" | wc -l`
+          if [ $dir_count -gt 0 ]; then
+            for dir in ./*/
+            do
+              cd ${dir}
+              env=${dir%*/}
+              env=${env#*/}
+              echo ""
+              echo "========> Terraform Plan <========"
+              echo "At environment: ${{ github.head_ref	}}"
+              echo "At workspace: ${env}"
+              echo "=================================="
+              terraform workspace new ${env}
+              terraform workspace select ${env}
+              terraform plan -no-color
+              cd ..
+            done
+          else
+            terraform plan -no-color
+          fi  
         continue-on-error: true
 
       - uses: actions/github-script@v6

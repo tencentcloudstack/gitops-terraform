@@ -54,7 +54,6 @@ jobs:
           if [ $dir_count -gt 0 ]; then
             for dir in ./*/
             do
-              cd ${dir}
               env=${dir%*/}
               env=${env#*/}
               echo ""
@@ -65,7 +64,6 @@ jobs:
               terraform workspace new ${env}
               terraform workspace select ${env}
               terraform plan -no-color
-              cd ..
             done
           else
             terraform plan -no-color

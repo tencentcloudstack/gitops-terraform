@@ -83,7 +83,7 @@ jobs:
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
-            ${{  steps.plan.outputs }}
+            ${{join(steps.plan.outputs.*, '\n')}}
             \`\`\`
 
             </details>

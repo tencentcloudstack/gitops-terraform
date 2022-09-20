@@ -64,11 +64,15 @@ jobs:
               echo "=================================="
 
               terraform workspace select ${env} || terraform workspace new ${env}
-              out="$(terraform plan -no-color)"
+              out="$out\n$(terraform plan -no-color)"
             done
           else
-            out="$(terraform plan -no-color)"
-          fi  
+            out="$out\n$(terraform plan -no-color)"
+
+          fi
+          out="${out//'%'/'%25'}"
+          out="${out//$'\n'/'%0A'}"
+          out="${out//$'\r'/'%0D'}"  
           echo "::set-output name=plan::$out"
         continue-on-error: true
 

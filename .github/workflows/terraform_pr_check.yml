@@ -50,6 +50,7 @@ jobs:
         if: github.event_name == 'pull_request'
         working-directory: environments/${{ github.head_ref	}}
         run: |
+          out=""
           dir_count=`ls -l | grep "^d" | wc -l`
           if [ $dir_count -gt 0 ]; then
             for dir in ./*/
@@ -63,17 +64,16 @@ jobs:
               echo "=================================="
 
               terraform workspace select ${env} || terraform workspace new ${env}
-              terraform plan -no-color
+              out="$(terraform plan -no-color)"
             done
           else
-            terraform plan -no-color
+            out="$(terraform plan -no-color)"
           fi  
+          echo "::set-output name=plan::$out"
         continue-on-error: true
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
@@ -83,7 +83,7 @@ jobs:
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
-            ${{join(steps.plan.outputs.*, '\n')}}
+            ${{ steps.plan.outputs.plan }}
             \`\`\`
 
             </details>

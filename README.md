@@ -22,14 +22,16 @@
 > 1. Module 是 Terraform 为了管理单元化资源而设计的，是子节点，子资源，子架构模板的整合和抽象
 > 2. Module通过对资源的定义，参数，语法等细节问题进行封装。让户只需关注module的input参数，无需关心细节信息，从而将更多的时间和精力投入到架构设计和资源关系整合上
 - environments目录用于隔离不同环境，用户可以在不同环境中使用不同的云厂商或配置不同的账号以实现多云管理
-  - dev分支通过创建vpc和subnet演示单一资源的创建
+  - dev分支通过创建vpc和subnet演示单一资源的创建(通过目录进行隔离)
   - prod分支通过创建tke集群演示多个资源相互依赖的资源创建
+    - prod通过目录进行隔离
+    - prod中的子目录通过workspace进行隔离（prod/main.tf中的module查看）
 
 > 环境隔离
 > 1. 隔离方式
 > - 使用分支进行隔离，不同环境使用不同分支，直接在root module下通过`terraform init`初始化使用
-> -  使用terraform workspace进行隔离，与分支方式类似
-> -  使用目录进行环境隔离，不同环境使用不同目录进行初始化
+> - 使用terraform workspace进行隔离，与分支方式类似
+> - 使用目录进行环境隔离，不同环境使用不同目录进行初始化
 
 ### 流水线信息
 1. pull_request流水线(terraform_pr_check.yml)

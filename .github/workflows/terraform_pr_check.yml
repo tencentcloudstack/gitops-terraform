@@ -69,8 +69,8 @@ jobs:
           else
             plan_info="$(terraform plan -no-color)"
           fi
-          echo ${plan_info//::*\n/}
-          echo ${plan_info//[command]*\n/}
+          plan_info=echo $plan_info | awk '!/^::/{print}'
+          plan_info=echo $plan_info | awk '!/^[command]/{print}'
           plan_info="${plan_info//'%'/'%25'}"
           plan_info="${plan_info//$'\n'/'%0A'}"
           plan_info="${plan_info//$'\r'/'%0D'}" 

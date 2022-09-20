@@ -27,5 +27,23 @@ jobs:
 
       - name: terraform apply
         working-directory: environments/${{ github.head_ref }}
-        run: terraform apply -auto-approve
+        run: |
+          dir_count=`ls -l | grep "^d" | wc -l`
+          if [ $dir_count -gt 0 ]; then
+            for dir in ./*/
+            do
+              env=${dir%*/}
+              env=${env#*/}
+              echo ""
+              echo "========> Terraform Apply <========"
+              echo "At environment: ${{ github.head_ref	}}"
+              echo "At workspace: ${env}"
+              echo "=================================="
+              
+              terraform workspace select ${env} || terraform workspace new ${env}
+              terraform apply -auto-approve
+            done
+          else
+            terraform apply -auto-approve
+          fi  
       

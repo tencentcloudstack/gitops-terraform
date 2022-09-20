@@ -49,13 +49,35 @@ jobs:
         id: plan
         if: github.event_name == 'pull_request'
         working-directory: environments/${{ github.head_ref	}}
-        run: terraform plan -no-color
+        run: |
+          plan_info=""
+          dir_count=`ls -l | grep "^d" | wc -l`
+          if [ $dir_count -gt 0 ]; then
+            for dir in ./*/
+            do
+              env=${dir%*/}
+              env=${env#*/}
+              echo ""
+              echo "========> Terraform Plan <========"
+              echo "At environment: ${{ github.head_ref	}}"
+              echo "At workspace: ${env}"
+              echo "=================================="
+
+              terraform workspace select ${env} || terraform workspace new ${env}
+              plan_info="$plan_info\n$(terraform plan -no-color)"
+            done
+          else
+            plan_info="$(terraform plan -no-color)"
+          fi
+
+          plan_info="${plan_info//'%'/'%25'}"
+          plan_info="${plan_info//$'\n'/'%0A'}"
+          plan_info="${plan_info//$'\r'/'%0D'}"
+          echo "::set-output name=plan_info::$plan_info"
         continue-on-error: true
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
@@ -65,7 +87,7 @@ jobs:
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
-            ${process.env.PLAN}
+            ${{ steps.plan.outputs.plan_info }}
             \`\`\`
 
             </details>

@@ -69,10 +69,7 @@ jobs:
           else
             plan_info="$(terraform plan -no-color)"
           fi
-          echo "plan_info: $plan_info"
-          plan_info=echo $plan_info | awk '!/^\n*::/{print}'
-          plan_info=echo $plan_info | awk '!/^\n*[command]/{print}'
-          echo "plan_info filter: $plan_info"
+
           plan_info="${plan_info//'%'/'%25'}"
           plan_info="${plan_info//$'\n'/'%0A'}"
           plan_info="${plan_info//$'\r'/'%0D'}" 
@@ -83,6 +80,9 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           script: |
+            plan_info=${{ steps.plan.outputs.plan_info }}
+            plan_info=echo $plan_info | awk '!/^\n*::/{print}'
+            plan_info=echo $plan_info | awk '!/^\n*[command]/{print}'
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
@@ -90,7 +90,7 @@ jobs:
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
-            ${{ steps.plan.outputs.plan_info }}
+            ${plan_info}
             \`\`\`
 
             </details>

@@ -70,8 +70,8 @@ jobs:
             plan_info="$(terraform plan -no-color)"
           fi
           echo "plan_info: $plan_info"
-          plan_info=echo $plan_info | awk '!/^::/{print}'
-          plan_info=echo $plan_info | awk '!/^[command]/{print}'
+          plan_info=echo $plan_info | awk '!/^\n*::/{print}'
+          plan_info=echo $plan_info | awk '!/^\n*[command]/{print}'
           echo "plan_info filter: $plan_info"
           plan_info="${plan_info//'%'/'%25'}"
           plan_info="${plan_info//$'\n'/'%0A'}"

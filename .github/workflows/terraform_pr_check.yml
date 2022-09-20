@@ -71,7 +71,7 @@ jobs:
           fi
 
           plan_info=$(echo $plan_info | awk '!/^::/{print}')
-          plan_info=$(echo $plan_info | awk '!/^\s*[command]/{print}')
+          plan_info=$(echo $plan_info | awk '!/^[command]/{print}')
           
           echo "::set-output name=plan_info::$plan_info"
         continue-on-error: true

@@ -72,7 +72,9 @@ jobs:
 
           plan_info=$(echo $plan_info | awk '!/^::/{print}')
           plan_info=$(echo $plan_info | awk '!/^[command]/{print}')
-          
+          plan_info="${plan_info//'%'/'%25'}"
+          plan_info="${plan_info//$'\n'/'%0A'}"
+          plan_info="${plan_info//$'\r'/'%0D'}"
           echo "::set-output name=plan_info::$plan_info"
         continue-on-error: true
 

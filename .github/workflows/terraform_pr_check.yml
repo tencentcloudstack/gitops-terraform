@@ -69,12 +69,14 @@ jobs:
           else
             plan_info="$(terraform plan -no-color)"
           fi
+          echo "plan_info: $plan_info"
           plan_info=echo $plan_info | awk '!/^::/{print}'
           plan_info=echo $plan_info | awk '!/^[command]/{print}'
+          echo "plan_info filter: $plan_info"
           plan_info="${plan_info//'%'/'%25'}"
           plan_info="${plan_info//$'\n'/'%0A'}"
           plan_info="${plan_info//$'\r'/'%0D'}" 
-          echo "::set-output name=plan::$plan_info"
+          echo "::set-output name=plan_info::$plan_info"
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -88,7 +90,7 @@ jobs:
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
-            ${{ steps.plan.outputs.plan }}
+            ${{ steps.plan.outputs.plan_info }}
             \`\`\`
 
             </details>

@@ -65,12 +65,7 @@ jobs:
               echo "=================================="
 
               terraform workspace select ${env} || terraform workspace new ${env}
-              echo "out: ${{ steps.plan.outputs.stdout }}"
-              out="$out\n$(terraform plan -no-color)"
-              out="${out//'%'/'%25'}"
-              out="${out//$'\n'/'%0A'}"
-              out="${out//$'\r'/'%0D'}" 
-              echo "out: $out"
+              echo "out: $(terraform plan -no-color)"
             done
           else
             out="$out\n$(terraform plan -no-color)"

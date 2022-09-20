@@ -70,8 +70,8 @@ jobs:
             plan_info="$(terraform plan -no-color)"
           fi
 
-          plan_info=$(echo $plan_info | awk '!/^::/{print}')
-          plan_info=$(echo $plan_info | awk '!/^\n*[command]/{print}')
+          plan_info=$(echo $plan_info | awk '!/^\s*::/{print}')
+          plan_info=$(echo $plan_info | awk '!/^(\r\n)*[command]/{print}')
           
           echo "::set-output name=plan_info::$plan_info"
         continue-on-error: true

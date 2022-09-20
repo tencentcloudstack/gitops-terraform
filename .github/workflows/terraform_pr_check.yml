@@ -51,6 +51,7 @@ jobs:
         working-directory: environments/${{ github.head_ref	}}
         run: |
           out=""
+          echo '::echo::off'
           dir_count=`ls -l | grep "^d" | wc -l`
           if [ $dir_count -gt 0 ]; then
             for dir in ./*/

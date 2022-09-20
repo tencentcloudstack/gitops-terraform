@@ -50,8 +50,7 @@ jobs:
         if: github.event_name == 'pull_request'
         working-directory: environments/${{ github.head_ref	}}
         run: |
-          out=""
-          echo '::echo::off'
+          plan_info=""
           dir_count=`ls -l | grep "^d" | wc -l`
           if [ $dir_count -gt 0 ]; then
             for dir in ./*/
@@ -65,16 +64,17 @@ jobs:
               echo "=================================="
 
               terraform workspace select ${env} || terraform workspace new ${env}
-              echo "out: $(terraform plan -no-color)"
+              plan_info="$plan_info\n$(terraform plan -no-color)"
             done
           else
-            out="$out\n$(terraform plan -no-color)"
-            out="${out//'%'/'%25'}"
-            out="${out//$'\n'/'%0A'}"
-            out="${out//$'\r'/'%0D'}" 
+            plan_info="$(terraform plan -no-color)"
           fi
-           
-          echo "::set-output name=plan::$out"
+          echo ${plan_info//::*\n/}
+          echo ${plan_info//[command]*\n/}
+          plan_info="${plan_info//'%'/'%25'}"
+          plan_info="${plan_info//$'\n'/'%0A'}"
+          plan_info="${plan_info//$'\r'/'%0D'}" 
+          echo "::set-output name=plan::$plan_info"
         continue-on-error: true
 
       - uses: actions/github-script@v6

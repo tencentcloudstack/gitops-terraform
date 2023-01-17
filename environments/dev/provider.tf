@@ -7,7 +7,7 @@ terraform {
   }
   backend "cos" {
     region = "ap-guangzhou"
-    bucket = "keep-gitops-dev-1308919341"
+    bucket = "keep-gitops-dev-1251987943"
     prefix = "terraform/state"
   }
 }
